@@ -1,3 +1,6 @@
+# JS/CSS libs
+songmanager/static/vendor/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
