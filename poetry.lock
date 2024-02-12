@@ -85,6 +85,20 @@ asgiref = ">=3.6"
 Django = ">=3.2"
 
 [[package]]
+name = "django-linear-migrations"
+version = "2.12.0"
+description = "Ensure your migrations are linear."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_linear_migrations-2.12.0-py3-none-any.whl", hash = "sha256:816d8c3d407930c94f56c22f89480c4c29186dde13b6b942209e97ccaaf04e13"},
+    {file = "django_linear_migrations-2.12.0.tar.gz", hash = "sha256:cb6f8dd05de796326af7064eb1822505b16cbbbcb9b2ccef940576e4942d5eda"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
+
+[[package]]
 name = "sqlparse"
 version = "0.4.4"
 description = "A non-validating SQL parser."
@@ -125,4 +139,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "8f8e784b650f9ea49b768bed4b11a06c8cbea48e1acdd3da50369054d23bdc25"
+content-hash = "0c3d678338f30d555af180ee4c2ff15961680c03535fe8b73cf4c1ea285c60ec"
