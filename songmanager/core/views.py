@@ -1,6 +1,13 @@
 from django.shortcuts import render
 
-# Create your views here.
+from core.models import Song
 
 def home(request):
-    return render(request, 'home.html')
+    """Home Page"""
+
+    songs = Song.objects \
+        .filter(user=request.user)
+
+    return render(request, 'home.html', {
+        'songs': songs,
+    })
