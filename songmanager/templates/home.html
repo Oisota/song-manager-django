@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load song_duration_format %}
+{% load crispy_forms_tags %}
 
 {% block title %}Song Manager{% endblock %}
 
@@ -9,7 +10,10 @@
 	<div class="row">
 		<div class="col-xl-8 offset-xl-2">
 
-			<h3>Songs</h3>
+			<div class="d-flex justify-content-between">
+				<h3>Songs</h3>
+				<button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#add-modal">Add</button>
+			</div>
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -17,6 +21,7 @@
 						<th scope="col">Name</th>
 						<th scope="col">Duration</th>
 						<th scope="col">Status</th>
+						<th scope="col"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -26,6 +31,12 @@
 						<td>{{song.name}}</td>
 						<td>{{song.duration | format_song_duration }}</td>
 						<td>{{song.status}}</td>
+						<td>
+							<span class="d-flex justify-content-end">
+								<button class="btn btn-warning me-2" type="button">Edit</button>
+								<button class="btn btn-danger" type="button">Delete</button>
+							</span>
+						</td>
 					</tr>
 					{% endfor %}
 				</tbody>
@@ -35,4 +46,24 @@
 	</div>
 </div>
 
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add New Song</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+					{% crispy form %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" _="on click send submit to #add-song-form">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

@@ -6,7 +6,7 @@ def insert_status(apps, schema_editor):
     Status = apps.get_model('core', 'Status')
     statuses = [
         'Gig Ready',
-        'Passable'
+        'Passable',
         'Needs Work',
         'Used To Know It',
         "Don't Know"

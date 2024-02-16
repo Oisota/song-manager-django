@@ -6,4 +6,5 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('songs/', views.new_song, name='songs'),
 ]
