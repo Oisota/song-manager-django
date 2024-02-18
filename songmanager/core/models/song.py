@@ -9,6 +9,11 @@ from .user import User
 #class Artist(models.Model):
 #    name = models.CharField(max_length=255, unique=True)
 
+#class Band(models.Model):
+#    name = models.CharField(max_length=255, unique=True)
+#    users = models.ManyToManyField(User)
+
+
 # how well you know the song
 class Status(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -26,3 +31,8 @@ class Song(models.Model):
 
     def __str__(self):
         return self.name
+
+#class SetList(models.Model):
+#    name = models.CharField(max_length=255, unique=True)
+#    user = models.ForeignKey(User, on_delete=models.CASCADE)
+#    songs = models.ManyToManyField(Song)

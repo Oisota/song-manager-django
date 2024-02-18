@@ -30,3 +30,19 @@ def new_song(request):
         form.save()
 
     return redirect(reverse('home'))
+
+def song_edit(request, song_id):
+    song = Song.objects.get(pk=song_id)
+    form = SongForm(instance=song)
+
+    if request.method == 'POST':
+        form = SongForm(request.POST)
+        form.instance.id = song.id
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save()
+        
+
+    return render(request, 'songs/edit.html', {
+        'form': form
+    })

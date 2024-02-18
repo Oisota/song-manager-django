@@ -15,5 +15,8 @@ class SongForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'add-song-form'
-        self.helper.form_method = 'post'
-        self.helper.form_action = reverse('songs')
+        self.helper.attrs['hx-post'] = reverse('songs')
+
+        if self.instance.id: # song being edited
+            self.helper.form_id = f'edit-song-form-{self.instance.id}'
+            self.helper.attrs['hx-post'] = reverse('song_edit', kwargs={'song_id': self.instance.id})

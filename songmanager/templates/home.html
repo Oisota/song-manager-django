@@ -10,31 +10,33 @@
 	<div class="row">
 		<div class="col-xl-8 offset-xl-2">
 
-			<div class="d-flex justify-content-between">
+			<div class="d-flex justify-content-between mb-1">
 				<h3>Songs</h3>
 				<button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#add-modal">Add</button>
 			</div>
-			<table class="table table-striped">
+			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
-						<th scope="col">ID</th>
+						<th scope="col"></th>
 						<th scope="col">Name</th>
 						<th scope="col">Duration</th>
 						<th scope="col">Status</th>
-						<th scope="col"></th>
+						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for song in songs %}
 					<tr>
-						<td scope="row">{{song.id}}</td>
+						<td scope="row">{{forloop.counter}}</td>
 						<td>{{song.name}}</td>
 						<td>{{song.duration | format_song_duration }}</td>
 						<td>{{song.status}}</td>
 						<td>
 							<span class="d-flex justify-content-end">
-								<button class="btn btn-warning me-2" type="button">Edit</button>
-								<button class="btn btn-danger" type="button">Delete</button>
+								<div class="btn-group">
+									<button class="btn btn-sm btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#edit-modal" hx-get="{% url 'song_edit' song.id %}" hx-target="#modal-edit-form">Edit</button>
+									<button class="btn btn-sm btn-danger" type="button">Delete</button>
+								</div>
 							</span>
 						</td>
 					</tr>
@@ -49,11 +51,11 @@
 {% endblock %}
 
 {% block modals %}
-<div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="add-modal" tabindex="-1" aria-labelledby="song-modal-title" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add New Song</h5>
+        <h5 class="modal-title" id="song-modal-title">Add New Song</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -62,6 +64,23 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" _="on click send submit to #add-song-form">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="song-edit-modal-title" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="song-edit-modal-title">Edit Song</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id="modal-edit-form" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" _="on click send submit to <#modal-edit-form form/>">Save</button>
       </div>
     </div>
   </div>
