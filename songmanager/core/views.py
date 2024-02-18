@@ -13,11 +13,16 @@ def home(request):
     songs = Song.objects \
         .filter(user=request.user)
 
+    total_duration = sum([song.duration for song in songs])
+    count = songs.count()
+
     form = SongForm()
 
     return render(request, 'home.html', {
         'form': form,
         'songs': songs,
+        'total_duration': total_duration,
+        'count': count,
     })
 
 @login_required
