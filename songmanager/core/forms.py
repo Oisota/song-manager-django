@@ -16,6 +16,7 @@ class SongForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'add-song-form'
         self.helper.attrs['hx-post'] = reverse('songs')
+        self.helper.attrs['hx-target'] = '#song-table-view'
 
         if self.instance.id: # song being edited
             self.helper.form_id = f'edit-song-form-{self.instance.id}'

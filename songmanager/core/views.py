@@ -8,7 +8,11 @@ from core.forms import SongForm
 
 @login_required
 def home(request):
-    """Home Page"""
+    return redirect(reverse('songs'))
+
+@login_required
+def songs(request):
+    """Render song table and handle new song requests"""
 
     songs = Song.objects \
         .filter(user=request.user)
@@ -17,26 +21,24 @@ def home(request):
     count = songs.count()
 
     form = SongForm()
+    template = 'songs/index.html'
 
-    return render(request, 'home.html', {
+    if request.method == 'POST':
+        form = SongForm(request.POST)
+        form.instance.user = request.user
+        if form.is_valid():
+            form.save()
+            template = 'songs/table.html'
+
+    return render(request, template, {
         'form': form,
         'songs': songs,
         'total_duration': total_duration,
         'count': count,
     })
 
-@login_required
-@require_POST
-def new_song(request):
-    """Handle new song form post"""
-    form = SongForm(request.POST)
-    form.instance.user = request.user
-    if form.is_valid():
-        form.save()
-
-    return redirect(reverse('home'))
-
 def song_edit(request, song_id):
+    """Render edit form and handle song updates"""
     song = Song.objects.get(pk=song_id)
     form = SongForm(instance=song)
 
@@ -46,6 +48,7 @@ def song_edit(request, song_id):
         form.instance.user = request.user
         if form.is_valid():
             form.save()
+            return redirect(reverse('songs'))
         
 
     return render(request, 'songs/edit.html', {
