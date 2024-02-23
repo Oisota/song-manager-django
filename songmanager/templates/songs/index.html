@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% load song_duration_format %}
 {% load crispy_forms_tags %}
 
 {% block title %}Song Manager{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/index.js' %}"></script>
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid pt-3">
 	<div class="row">
 		<div class="col-xl-8 offset-xl-2">
 
-			<div id="song-table-view">
+			<div id="song-table-view" hx-get="{% url 'songs' %}" hx-trigger="song-update from:body">
 				{% include 'songs/table.html' %}
 			</div>
 
@@ -28,12 +33,12 @@
         <h5 class="modal-title" id="song-modal-title">Add New Song</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div id="modal-add-form" class="modal-body">
 					{% crispy form %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" _="on click send submit to #add-song-form">Save</button>
+        <button id="modal-add-btn" type="button" class="btn btn-primary">Save</button>
       </div>
     </div>
   </div>
@@ -50,7 +55,24 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" _="on click send submit to <#modal-edit-form form/>">Save</button>
+        <button id="modal-edit-btn" type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="song-delete-modal-title" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="song-delete-modal-title">Delete Song</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id="modal-delete-form" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="modal-delete-btn" type="button" class="btn btn-danger">Delete</button>
       </div>
     </div>
   </div>
