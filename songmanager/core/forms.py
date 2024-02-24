@@ -35,7 +35,7 @@ class SongForm(ModelForm):
 
         if self.instance.id: # song being edited
             self.helper.form_id = f'edit-song-form-{self.instance.id}'
-            self.helper.attrs['hx-post'] = reverse('song_edit', kwargs={'song_id': self.instance.id})
+            self.helper.attrs['hx-post'] = reverse('song', kwargs={'song_id': self.instance.id})
             self.helper.attrs['hx-trigger'] = 'click from:#modal-edit-btn'
             self.helper.attrs['hx-on:htmx:after-request'] = 'App.editSongSuccess()'
 
@@ -49,7 +49,7 @@ class SongDeleteForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'delete-song-form'
-        self.helper.attrs['hx-delete'] = reverse('song_delete', kwargs={'song_id': self.instance.id})
+        self.helper.attrs['hx-delete'] = reverse('song', kwargs={'song_id': self.instance.id})
         self.helper.attrs['hx-trigger'] = 'click from:#modal-delete-btn'
         self.helper.attrs['hx-on:htmx:after-request'] = 'App.deleteSongSuccess()'
         self.helper.layout = Layout(

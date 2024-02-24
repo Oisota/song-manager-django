@@ -8,8 +8,20 @@
 	<td>
 		<span class="d-flex justify-content-end">
 			<div class="btn-group">
-				<button class="btn btn-sm btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#edit-modal" hx-get="{% url 'song_edit' song.id %}" hx-target="#modal-edit-form">Edit</button>
-				<button class="btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal" hx-get="{% url 'song_delete' song.id %}" hx-target="#modal-delete-form">Delete</button>
+				<button class="btn btn-sm btn-warning"
+					type="button"
+					data-bs-toggle="modal"
+					data-bs-target="#edit-modal"
+					hx-get="{% url 'song' song.id %}"
+					hx-vals='{"view": "edit"}'
+					hx-target="#modal-edit-form">Edit</button>
+				<button class="btn btn-sm btn-danger"
+					type="button"
+					data-bs-toggle="modal"
+					data-bs-target="#delete-modal"
+					hx-get="{% url 'song' song.id %}"
+					hx-vals='{"view": "delete"}'
+					hx-target="#modal-delete-form">Delete</button>
 			</div>
 		</span>
 	</td>

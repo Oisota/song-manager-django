@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET, require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.http import HttpResponse
@@ -52,6 +52,7 @@ def songs(request):
         'count': count,
     })
 
+@require_POST
 @login_required
 def song_search(request):
     search_text = request.POST.get('search-text')
@@ -61,13 +62,25 @@ def song_search(request):
         'songs': songs,
     })
 
+@require_http_methods(['GET', 'POST', 'DELETE'])
 @login_required
-def song_edit(request, song_id):
-    """Render edit form and handle song updates"""
+def song(request, song_id):
+    """Handle edit/delete of song"""
     song = Song.objects.get(pk=song_id)
-    form = SongForm(instance=song)
 
-    if request.method == 'POST':
+    if request.method == 'GET':
+        view = request.GET.get('view', 'edit')
+        if view == 'edit':
+            form = SongForm(instance=song)
+            return render(request, 'songs/edit.html', {
+                'form': form
+            })
+        elif view == 'delete':
+            form = SongDeleteForm(instance=song)
+            return render(request, 'songs/delete.html', {
+                'form': form
+            })
+    elif request.method == 'POST':
         form = SongForm(request.POST)
         form.instance.id = song.id
         form.instance.user = request.user
@@ -76,27 +89,12 @@ def song_edit(request, song_id):
             resp = HttpResponse(status=204)
             resp.headers['HX-Trigger'] = 'song-update'
             return resp
-        
-
-    return render(request, 'songs/edit.html', {
-        'form': form
-    })
-
-@login_required
-def song_delete(request, song_id):
-    song = Song.objects.get(pk=song_id)
-    form = SongDeleteForm(instance=song)
-
-    if request.method == 'DELETE':
+    elif request.method == 'DELETE':
+        form = SongDeleteForm(instance=song)
         if form.is_valid():
-            print('Form Valid')
             Song.objects.get(pk=song_id).delete()
             resp = HttpResponse(status=204)
             resp.headers['HX-Trigger'] = 'song-update'
             return resp
         else:
             return HttpResponse(400)
-        
-    return render(request, 'songs/delete.html', {
-        'form': form,
-    })
