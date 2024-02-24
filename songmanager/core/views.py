@@ -53,6 +53,15 @@ def songs(request):
     })
 
 @login_required
+def song_search(request):
+    search_text = request.POST.get('search-text')
+    songs = Song.objects \
+        .filter(user=request.user, name__icontains=search_text)
+    return render(request, 'songs/search-results.html', {
+        'songs': songs,
+    })
+
+@login_required
 def song_edit(request, song_id):
     """Render edit form and handle song updates"""
     song = Song.objects.get(pk=song_id)
