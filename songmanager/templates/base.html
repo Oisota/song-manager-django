@@ -1,21 +1,26 @@
 {% load static %}
+{% load django_htmx %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{% block title %}Song Manager{% endblock %}</title>
+	<title>Song Manager | {% block title %}Home{% endblock %}</title>
 	<link href="{% static 'vendor/bootstrap-5.3.1-dist/css/bootstrap.min.css' %}" rel="stylesheet" >
 	{% block styles %}
 	{% endblock %}
 </head>
 <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
 	{% include 'includes/navbar.html' %}
+
 	{% block content %}
 	{% endblock %}
+
 	{% block modals %}
 	{% endblock %}
+
 	<script src="{% static 'vendor/htmx.min.js' %}"></script>
+	{% django_htmx_script %}
 	<script src="{% static 'vendor/_hyperscript.min.js' %}"></script>
 	<script src="{% static 'vendor/bootstrap-5.3.1-dist/js/bootstrap.bundle.min.js' %}"></script>
 	{% if debug %}
@@ -35,5 +40,6 @@
 	{% endif %}
 	{% block scripts %}
 	{% endblock %}
+
 </body>
 </html>

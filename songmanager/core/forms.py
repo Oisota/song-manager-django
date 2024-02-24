@@ -2,10 +2,22 @@
 
 from django.forms import ModelForm, HiddenInput
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML
+from crispy_forms.layout import Layout, HTML, Submit
 
-from core.models import Song
+from core.models import Song, User
+
+class RegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['email', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-primary'))
+
 
 class SongForm(ModelForm):
     class Meta:

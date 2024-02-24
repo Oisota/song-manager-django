@@ -5,7 +5,20 @@ from django.urls import reverse
 from django.http import HttpResponse
 
 from core.models import Song
-from core.forms import SongForm, SongDeleteForm
+from core.forms import SongForm, SongDeleteForm, RegistrationForm
+
+def register(request):
+    form = RegistrationForm()
+
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('songs'))
+
+    return render(request, 'registration/register.html', {
+        'form': form,
+    })
 
 @login_required
 def home(request):
