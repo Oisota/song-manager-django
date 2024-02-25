@@ -38,7 +38,8 @@ def songs(request):
             form.save()
 
     songs = Song.objects \
-        .filter(user=request.user)
+        .filter(user=request.user) \
+        .order_by('name')
 
     total_duration = sum([song.duration for song in songs])
     count = songs.count()
