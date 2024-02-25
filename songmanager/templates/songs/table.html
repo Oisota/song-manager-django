@@ -7,7 +7,7 @@
 	placeholder="Search"
 	name="search-text"
 	id="search-input"
-	hx-post="{% url 'search-songs' %}"
+	hx-get="{% url 'songs' %}"
 	hx-trigger="input changed delay:500ms, search"
 	hx-target="#search-results"
 >

@@ -31,36 +31,35 @@ def songs(request):
     if request.htmx:
         template = 'songs/table.html'
 
+    form = SongForm()
+
     if request.method == 'POST':
         form = SongForm(request.POST)
         form.instance.user = request.user
         if form.is_valid():
             form.save()
 
-    songs = Song.objects \
-        .filter(user=request.user) \
-        .order_by('name')
+    if 'search-text' in request.GET:
+        if request.htmx:
+            template = 'songs/search-results.html'
+
+        search_text = request.GET.get('search-text')
+        songs = Song.objects \
+            .filter(user=request.user, name__icontains=search_text) \
+            .order_by('name')
+    else:
+        songs = Song.objects \
+            .filter(user=request.user) \
+            .order_by('name')
 
     total_duration = sum([song.duration for song in songs])
     count = songs.count()
-
-    form = SongForm()
 
     return render(request, template, {
         'form': form,
         'songs': songs,
         'total_duration': total_duration,
         'count': count,
-    })
-
-@require_POST
-@login_required
-def song_search(request):
-    search_text = request.POST.get('search-text')
-    songs = Song.objects \
-        .filter(user=request.user, name__icontains=search_text)
-    return render(request, 'songs/search-results.html', {
-        'songs': songs,
     })
 
 @require_http_methods(['GET', 'POST', 'DELETE'])

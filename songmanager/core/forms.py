@@ -25,7 +25,7 @@ class SongNumberInput(NumberInput):
 class SongDurationWidget(MultiWidget):
     """Split duration into separate minutes/seconds inputs"""
     def __init__(self, attrs=None):
-        number_attrs = {'max': 60, 'min': 0}
+        number_attrs = {'max': 59, 'min': 0}
         widgets = [
             SongNumberInput(attrs=number_attrs),
             SongNumberInput(attrs=number_attrs)

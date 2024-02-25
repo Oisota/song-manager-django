@@ -9,5 +9,4 @@ urlpatterns = [
     path('accounts/register', views.register, name='register'),
     path('songs/', views.songs, name='songs'),
     path('songs/<song_id>', views.song, name='song'),
-    path('search/songs', views.song_search, name='search-songs'),
 ]
