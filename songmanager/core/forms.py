@@ -3,9 +3,9 @@
 from django.forms import ModelForm, HiddenInput, MultiWidget, NumberInput
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.safestring import SafeString
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, HTML, Submit, MultiWidgetField, MultiField
-from crispy_forms.bootstrap import InlineField
+from crispy_forms.layout import Layout, HTML, Submit, MultiWidgetField
 
 from core.models import Song, User
 
@@ -19,14 +19,16 @@ class RegistrationForm(UserCreationForm):
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', 'Submit', css_class='btn btn-primary'))
 
+class SongNumberInput(NumberInput):
+    template_name = "songs/number-input.html"
 
 class SongDurationWidget(MultiWidget):
     """Split duration into separate minutes/seconds inputs"""
     def __init__(self, attrs=None):
         number_attrs = {'max': 60, 'min': 0}
         widgets = [
-            NumberInput(attrs=number_attrs),
-            NumberInput(attrs=number_attrs)
+            SongNumberInput(attrs=number_attrs),
+            SongNumberInput(attrs=number_attrs)
         ]
         super().__init__(widgets, attrs)
 
@@ -43,6 +45,10 @@ class SongDurationWidget(MultiWidget):
         seconds = int(seconds_str)
         return (minutes * 60) + seconds
 
+    def render(self, *args, **kwargs):
+        output = super().render(*args, **kwargs)
+        result = f'<div class="row">{output}</div>'
+        return SafeString(result)
 
 
 class SongForm(ModelForm):
@@ -62,9 +68,12 @@ class SongForm(ModelForm):
         self.helper.attrs['hx-trigger'] = 'click from:#modal-add-btn'
         self.helper.attrs['hx-on:htmx:after-request'] = 'App.addSongSuccess()'
 
+        # NOTE Struggling to get the layout for the duration field to work properly.
+        # See this issue for more detail: https://github.com/django-crispy-forms/django-crispy-forms/issues/831#issuecomment-577231845
+        # have it working now
         self.helper.layout = Layout(
             'name',
-            MultiWidgetField('duration', attrs={'class': 'mb-1'}),
+            MultiWidgetField('duration'),
             'status'
         )
 

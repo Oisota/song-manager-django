@@ -1,0 +1,11 @@
+<div class="col">
+	<div class="input-group mb-3">
+	<input type="{{ widget.type }}" name="{{ widget.name }}"{% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+		{% if widget.name  == 'duration_0' %}
+		<span class="input-group-text">minutes</span>
+		{% else %}
+		<span class="input-group-text">seconds</span>
+		{% endif %}
+	</div>
+
+</div>

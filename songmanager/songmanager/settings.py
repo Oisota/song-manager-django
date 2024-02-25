@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.forms',
     'django_linear_migrations',
     'debug_toolbar',
     'django_htmx',
@@ -81,6 +82,7 @@ TEMPLATES = [
         },
     },
 ]
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'songmanager.wsgi.application'
 
