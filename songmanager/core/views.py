@@ -96,5 +96,4 @@ def song(request, song_id):
             resp = HttpResponse(status=204)
             resp.headers['HX-Trigger'] = 'song-update'
             return resp
-        else:
-            return HttpResponse(400)
+        return HttpResponse(400)
