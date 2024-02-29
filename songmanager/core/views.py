@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
@@ -6,6 +8,8 @@ from django.http import HttpResponse
 
 from core.models import Song
 from core.forms import SongForm, SongDeleteForm, RegistrationForm
+
+log = logging.getLogger(__name__)
 
 def register(request):
     form = RegistrationForm()
@@ -20,9 +24,12 @@ def register(request):
         'form': form,
     })
 
-@login_required
 def home(request):
-    return redirect(reverse('songs'))
+    log.info(request.user)
+    if request.user.is_authenticated:
+        return redirect(reverse('songs'))
+
+    return render(request, 'home.html', {})
 
 @login_required
 def songs(request):

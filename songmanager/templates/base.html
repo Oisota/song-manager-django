@@ -36,6 +36,12 @@
             }
         });
 				//htmx.logAll();
+				htmx.on('htmx:sendError', (detail) => {
+					// need to create a notification popup or something
+				});
+				htmx.on('htmx:responseError', (detail) => {
+					// need to create a notification popup or something
+				});
     }
 	</script>
 	{% endif %}
