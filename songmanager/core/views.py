@@ -25,10 +25,11 @@ def register(request):
     })
 
 def home(request):
-    log.info(request.user)
     if request.user.is_authenticated:
+        # user logged in, redirecto main song view
         return redirect(reverse('songs'))
 
+    # otherwise show landing page
     return render(request, 'home.html', {})
 
 @login_required
