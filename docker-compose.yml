@@ -6,12 +6,15 @@ services:
     depends_on:
       - db
     env_file:
-      - ./songmanger/.env
+      - ./songmanager/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/opt/app
+
   db:
-    image: mysql:8.3.0
+    image: postgres:16
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: songmanager
-      MYSQL_USER: songmanager
-      MYSQL_PASSWORD: password
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: songmanager
